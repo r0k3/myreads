@@ -14,15 +14,15 @@ class BookshelfChanger extends Component {
     };
 
     render() {
-        const myshelf = this.props.book.shelf;
+        const myshelf = this.props.book.hasOwnProperty('shelf') ? this.props.book.shelf : 'none';
         return (
             <div className="book-shelf-changer">
                 <select value={myshelf} onChange={this.handleChange}>
                     <option value="none" disabled>Move to...</option>
-                    <option value="currentlyReading">Currently Reading</option>
-                    <option value="wantToRead">Want to Read</option>
-                    <option value="read">Read</option>
-                    <option value="none">None</option>
+                    { (myshelf !== 'currentlyReading') && <option value="currentlyReading">Currently Reading</option>}
+                    { (myshelf !== 'wantToRead') && <option value="wantToRead">Want to Read</option>}
+                    { (myshelf !== 'read') && <option value="read">Read</option>}
+                    { (myshelf !== 'none') && <option value="none">None</option>}
                 </select>
             </div>)
     }
