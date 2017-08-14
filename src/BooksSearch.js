@@ -21,8 +21,17 @@ class BookSearch extends Component {
     handleSearch = (event) => {
         event.preventDefault();
         if (this.state.searchQuery) {
-            this.props.searchFunc(this.state.searchQuery, 20).then(books =>
-                this.setState({searchResult: books.error ? [] : books}))
+            this.props.searchFunc(this.state.searchQuery, 20).then(result => {
+                    const foundBooks = result.error ? [] : result;
+                    const existingBookIds = new Set(this.props.books.map((book) => book.id));
+                    const foundBookIds = new Set(foundBooks.map((book) => book.id));
+                    this.setState({
+                        searchResult: [
+                            ...this.props.books.filter(book => foundBookIds.has(book.id)),
+                            ...foundBooks.filter(book => !existingBookIds.has(book.id))]
+                    });
+                }
+            )
         }
     };
 
